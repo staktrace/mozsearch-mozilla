@@ -92,12 +92,12 @@ function check_all_same {
 # to test other revisions. If you do this, also override INDEXED_GIT_REV below to some sane
 # git-equivalent of the revision because most likely it won't find anything in the mapfile.
 # This defaults to the most recent searchfox indexing run for mozilla-central.
-REVISION=mozilla-central.latest
+REVISION=try.revision.ed78fab92e20607724613c7425a4feebdb61916b
 
 pushd $INDEX_ROOT
 curl -SsfL --compressed https://index.taskcluster.net/v1/task/gecko.v2.$REVISION.firefox.linux64-searchfox-debug/artifacts/public/build/target.json > target.json
 INDEXED_HG_REV=$(python $MOZSEARCH_PATH/scripts/read-json.py target.json moz_source_stamp)
-INDEXED_GIT_REV=$(awk -v REV=$INDEXED_HG_REV '$2 ~ REV { print $1 }' git_hg.map)
+INDEXED_GIT_REV=6e9e3990660a180bccb1989c85e3a5e150e0aab2
 
 # If INDEXED_GIT_REV gets set, that means the gecko-dev repo includes the code for which
 # the taskcluster indexing job ran. So we can download the result of that indexing
