@@ -17,13 +17,6 @@ repo_path = config['trees'][tree_name]['files_path']
 stdout = run('git ls-files --recurse-submodules', shell=True, cwd=repo_path)
 lines = stdout.split('\n')
 
-# Comm-central has a mozilla/ subrepo
-if tree_name == 'comm-central':
-    stdout = run('git ls-files', shell=True, cwd=os.path.join(repo_path, 'mozilla'))
-    lines2 = stdout.split('\n')
-    lines2 = [ 'mozilla/' + f for f in lines2 if f ]
-    lines = lines + lines2
-
 files = []
 js = []
 idl = []

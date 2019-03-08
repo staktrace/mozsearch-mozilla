@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -x # Show commands
+set -eu # Errors/undefined vars are fatal
+set -o pipefail # Check all commands in a pipeline
+
+# This temporarily adds the mozilla subfolder as a submodule to the
+# comm-central repo. This change should never be committed or uploaded
+# to the S3 tarball. But having this change staged in the comm-central
+# repo means we can use the submodule support in other parts of
+# mozsearch and not resort to hacks specific to this repo.
+# See also submodule-rm for the script that undoes this.
+pushd $GIT_ROOT
+git submodule add ./mozilla
+popd

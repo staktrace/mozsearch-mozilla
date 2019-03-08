@@ -6,12 +6,21 @@ set -o pipefail # Check all commands in a pipeline
 
 date
 
+# If we're uploading (which local/dev indexing runs don't do), then we don't
+# want to upload the information regarding the staged submodule. So we
+# temporarily revert that change, upload the tarball, and then re-apply the
+# change.
+$CONFIG_REPO/comm-central/submodule-rm
+
 echo Uploading comm-central
 pushd $INDEX_ROOT
 tar --exclude='comm-central/mozilla' -cf comm-central.tar comm-central
 python $AWS_ROOT/upload.py $INDEX_ROOT/comm-central.tar searchfox.repositories comm-central.tar
 rm comm-central.tar
 popd
+
+# And now that the upload is done, let's re-add the submodule.
+$CONFIG_REPO/comm-central/submodule-add
 
 date
 

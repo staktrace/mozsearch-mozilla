@@ -48,6 +48,10 @@ fi
 
 date
 
+# The submodule may be staged from a previous run of the indexer. If so,
+# ensure it is removed before we attempt a `git pull`.
+$CONFIG_REPO/comm-central/submodule-rm
+
 echo Updating git
 pushd $GIT_ROOT
 git pull
@@ -58,6 +62,8 @@ git checkout master
 git pull
 popd
 popd
+
+$CONFIG_REPO/comm-central/submodule-add
 
 echo Generating blame information
 python $MOZSEARCH_PATH/blame/transform-repo.py $GIT_ROOT $BLAME_ROOT

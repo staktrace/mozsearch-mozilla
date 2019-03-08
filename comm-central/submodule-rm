@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -x # Show commands
+set -eu # Errors/undefined vars are fatal
+set -o pipefail # Check all commands in a pipeline
+
+# This undoes the actions from submodule-add. The only thing it leaves
+# bhind is an entry in the .git/config file which is harmless and
+# doesn't interfere with future runs. If run while the submodule
+# is not staged, it should not fail, but will be a no-op.
+pushd $GIT_ROOT
+if [ -f ".gitmodules" ]; then
+    git reset
+    rm -f .gitmodules
+fi
+popd
